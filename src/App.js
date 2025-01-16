@@ -16,19 +16,36 @@ const Counter = () => {
   const date = new Date();
   date.setDate(date.getDate() + count); // Update date based on count
 
+  const resetValues = () => {
+    setCount(0);
+    setStep(1);
+  };
+
   return (
     <div>
       {/* Step adjustment section */}
       <div>
-        <button onClick={() => setStep((s) => Math.max(s - 1, 1))}>-</button>
-        <span>Step: {step}</span>
-        <button onClick={() => setStep((s) => s + 1)}>+</button>
+        <label htmlFor="step-slider">Step:</label>
+        <input
+          id="step-slider"
+          type="range"
+          min="1"
+          max="10"
+          value={step}
+          onChange={(e) => setStep(Number(e.target.value))}
+        />
+        <span>{step}</span>
       </div>
 
       {/* Count adjustment section */}
       <div>
         <button onClick={() => setCount((c) => c - step)}>-</button>
-        <span>Count: {count}</span>
+        <input
+          type="number"
+          value={count}
+          onChange={(e) => setCount(Number(e.target.value))}
+          style={{ width: "60px", textAlign: "center" }}
+        />
         <button onClick={() => setCount((c) => c + step)}>+</button>
       </div>
 
@@ -45,6 +62,12 @@ const Counter = () => {
         </span>
         <span>{date.toDateString()}</span>
       </p>
+      {/* Conditionally render Reset button */}
+      {(count !== 0 || step !== 1) && (
+        <div>
+          <button onClick={resetValues}>Reset</button>
+        </div>
+      )}
     </div>
   );
 };
